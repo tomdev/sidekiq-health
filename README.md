@@ -1,6 +1,6 @@
 # Sidekiq::Health
 
-Sidekiq::Health prints the size of your Sidekiq Queues with either an `OK` or `WARNING` tag for processing by monitoring scripts. The current threshold is set to 50 meaning that when there are more than 49 jobs enqueued Sidekiq::Health will mark the queue as "too busy".
+Sidekiq::Health prints the size of your Sidekiq Queues with either an `OK` or `WARNING` tag, the queue name and size. The current threshold is set to 50 meaning that when there are more than 49 jobs enqueued Sidekiq::Health will mark the queue as "too busy".
 
 ## Installation
 
