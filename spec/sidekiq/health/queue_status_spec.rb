@@ -7,7 +7,7 @@ describe Sidekiq::Health::QueueStatus do
   end
 
   describe '#status' do
-    subject { described_class.new.status }
+    subject { described_class.new.print }
 
     context 'with queue size smaller than threshold' do
       let(:queue_size) { 1 }
