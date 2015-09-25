@@ -18,6 +18,12 @@ Or install it yourself as:
 
     $ gem install sidekiq-health
 
+## Requirements
+
+Sidekiq::Health expects you to have the default Sidekiq configuration file located in `config/sidekiq.yml`.
+
+NOTE: Only names queues are supported at this time.
+
 ## Usage
 
 TODO: Write usage instructions here
