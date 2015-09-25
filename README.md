@@ -53,3 +53,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/tomdev
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+## Credits
+
+I was inspired by Alex Stoll from HE:labs http://helabs.com/blog/2015/02/19/a-simple-way-to-monitor-sidekiq-queue-on-rails-and-sinatra/
