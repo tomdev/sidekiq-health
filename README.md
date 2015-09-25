@@ -1,8 +1,6 @@
 # Sidekiq::Health
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sidekiq/health/status`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Sidekiq::Health prints the size of your Sidekiq Queues with either an `OK` or `WARNING` tag for processing by monitoring scripts. The current threshold is set to 50 meaning that when there are more than 49 jobs enqueued Sidekiq::Health will mark the queue as "too busy".
 
 ## Installation
 
