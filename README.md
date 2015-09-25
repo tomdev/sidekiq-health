@@ -26,7 +26,17 @@ NOTE: Only names queues are supported at this time.
 
 ## Usage
 
-TODO: Write usage instructions here
+Sidekiq::Health is intended to be used within a Rails project. When added to your project's Gemfile a rake task will be added:
+
+    $ rake sidekiq::queue::status
+
+Which, depending on your `config/sidekiq.yml` and state of Sidekiq will result in:
+
+```
+WARNING: TOO MANY JOBS ENQUEUED. Queue: "mailers" Size: 75
+OK. Queue: "default" Size: 0
+```
+Match the "WARNING" with your favorite monitoring tool and escalate accordingly.
 
 ## Development
 
