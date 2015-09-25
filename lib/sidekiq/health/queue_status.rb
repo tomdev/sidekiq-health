@@ -1,4 +1,3 @@
-require 'sidekiq/health/version'
 require 'sidekiq/api'
 
 module Sidekiq
