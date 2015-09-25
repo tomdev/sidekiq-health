@@ -10,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["tom@hackerone.com"]
 
   spec.summary       = %q{Monitor the size of your Sidekiq queues.}
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.description   = %q{Sidekiq::Health adds a rake task that outputs the
+    current size our your Sidekiq queues.}
   spec.homepage      = "https://github.com/tomdev/sidekiq-health"
   spec.license       = "MIT"
 
