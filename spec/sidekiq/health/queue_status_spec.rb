@@ -2,8 +2,21 @@ require 'spec_helper'
 
 describe Sidekiq::Health::QueueStatus do
   before do
-    allow_any_instance_of(Sidekiq::Queue).to receive(:size).and_return queue_size
-    allow_any_instance_of(described_class).to receive(:queue_names).and_return queue_names
+    stub_const 'Sidekiq::Health::QueueNames', Class.new
+  end
+
+  def stub_queue_names(queue_names)
+    allow_any_instance_of(Sidekiq::Health::QueueNames).to receive(:get)
+      .and_return queue_names
+  end
+
+  def stub_queue_size(*args)
+    queue_stubs = *args
+    queue_stubs.each do |queue_stub|
+      allow_any_instance_of(described_class).to receive(:queue_size)
+        .with(queue_stub[0])
+        .and_return(queue_stub[1])
+    end
   end
 
   describe '#status' do
@@ -13,19 +26,25 @@ describe Sidekiq::Health::QueueStatus do
       let(:queue_size) { 1 }
 
       context 'with one queue' do
-        let(:queue_names) { %w{ some_queue } }
+        before do
+          stub_queue_names(['default'])
+          stub_queue_size(['default', 1])
+        end
 
         it 'returns OK' do
-          expect(subject).to eq "OK. Queue: \"#{queue_names[0]}\" Size: 1"
+          expect(subject).to eq "OK. Queue: \"default\" Size: 1"
         end
       end
 
       context 'with multiple queues' do
-        let(:queue_names) { %w{ Q1 Q2 } }
+        before do
+          stub_queue_names(['default', 'myqueue'])
+          stub_queue_size(['default', 1], ['myqueue', 1])
+        end
 
         it 'return OK' do
-          expect(subject).to eq "OK. Queue: \"#{queue_names[0]}\" Size: 1\n" \
-            "OK. Queue: \"#{queue_names[1]}\" Size: 1"
+          expect(subject).to eq "OK. Queue: \"default\" Size: 1\n" \
+            "OK. Queue: \"myqueue\" Size: 1"
         end
       end
     end
@@ -34,30 +53,29 @@ describe Sidekiq::Health::QueueStatus do
       let(:queue_size) { 50 }
 
       context 'with one queue' do
-        let(:queue_names) { %w{ some_queue } }
+        before do
+          stub_queue_names(['default'])
+          stub_queue_size(['default', 50])
+        end
 
         it 'returns WARNING' do
           expect(subject).to eq \
-            "WARNING: TOO MANY JOBS ENQUEUED. Queue: \"#{queue_names[0]}\" Size: 50"
+            "WARNING: TOO MANY JOBS ENQUEUED. Queue: \"default\" Size: 50"
+        end
+      end
+
+      context 'with multiple queues' do
+        before do
+          stub_queue_names(['default', 'myqueue'])
+          stub_queue_size(['default', 50], ['myqueue', 100])
+        end
+
+        it 'returns WARNING' do
+          expect(subject).to eq \
+            "WARNING: TOO MANY JOBS ENQUEUED. Queue: \"default\" Size: 50\n" \
+            "WARNING: TOO MANY JOBS ENQUEUED. Queue: \"myqueue\" Size: 100" \
         end
       end
     end
   end
 end
-
-
-  # context 'with a healty queue' do
-  #   before do
-      # allow_any_instance_of(Sidekiq::Queue).to receive(:size).and_return(1)
-  #   end
-
-  #   it { is_expected.to eq 'OK. QUEUE SIZE: 1'}
-  # end
-
-  # context 'with an unhealthy queue' do
-  #   before do
-  #     allow_any_instance_of(Sidekiq::Queue).to receive(:size).and_return(50)
-  #   end
-
-  #   it { is_expected.to eq 'WARNING: TOO MANY JOBS ENQUEUED. QUEUE SIZE: 50'}
-  # end

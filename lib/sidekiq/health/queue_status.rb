@@ -8,7 +8,7 @@ module Sidekiq
 
         queue_names.each do |name|
           output << "\n" unless output == ""
-          output << QueueHealthFormatter.new(name, size_for_queue(name)).to_s
+          output << QueueHealthFormatter.new(name, queue_size(name)).to_s
         end
 
         output
@@ -16,13 +16,12 @@ module Sidekiq
 
       private
 
-      def size_for_queue(name)
+      def queue_size(name)
         Sidekiq::Queue.new(name).size
       end
 
       def queue_names
-        # TODO: Read queue names from configuration
-        %w{ mailers default slow }
+        Sidekiq::Health::QueueNames.new.get
       end
     end
 
