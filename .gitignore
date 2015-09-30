@@ -7,4 +7,5 @@
 /pkg/
 /spec/reports/
 /tmp/
-/.sidekiq-health.gemspec
+/sidekiq-health.gemspec
+/sidekiq*.gem
