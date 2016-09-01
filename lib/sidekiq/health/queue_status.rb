@@ -80,8 +80,6 @@ module Sidekiq
       end
 
       def statuses
-        Sidekiq::DeadSet.new
-
         queue_names.map do |name|
           Status.new \
             name,
